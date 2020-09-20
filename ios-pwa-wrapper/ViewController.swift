@@ -12,8 +12,6 @@ import WebKit
 class ViewController: UIViewController {
     
     // MARK: Outlets
-    @IBOutlet weak var leftButton: UIBarButtonItem!
-    @IBOutlet weak var rightButton: UIBarButtonItem!
     @IBOutlet weak var webViewContainer: UIView!
     @IBOutlet weak var offlineView: UIView!
     @IBOutlet weak var offlineIcon: UIImageView!
@@ -25,10 +23,12 @@ class ViewController: UIViewController {
     var webView: WKWebView!
     var tempView: WKWebView!
     var progressBar : UIProgressView!
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.title = appTitle
         setupApp()
     }
@@ -83,7 +83,6 @@ class ViewController: UIViewController {
         }
         if (keyPath == #keyPath(WKWebView.estimatedProgress)) {
             progressBar.progress = Float(webView.estimatedProgress)
-            rightButton.isEnabled = (webView.estimatedProgress == 1)
         }
     }
     
@@ -153,20 +152,18 @@ class ViewController: UIViewController {
         offlineView.isHidden = true
         
         // setup navigation bar
-        if (forceLargeTitle) {
-            if #available(iOS 11.0, *) {
-                navigationItem.largeTitleDisplayMode = UINavigationItem.LargeTitleDisplayMode.always
-            }
-        }
-        if (useLightStatusBarStyle) {
-            self.navigationController?.navigationBar.barStyle = UIBarStyle.black
-        }
-        
+//        if (forceLargeTitle) {
+//            if #available(iOS 11.0, *) {
+//                navigationItem.largeTitleDisplayMode = UINavigationItem.LargeTitleDisplayMode.always
+//            }
+//        }
+//        if (useLightStatusBarStyle) {
+//            self.navigationController?.navigationBar.barStyle = UIBarStyle.black
+//        }
+//
         // handle menu button changes
         /// set default
-        rightButton.title = menuButtonTitle
         /// update if necessary
-        updateRightButtonTitle(invert: false)
         /// create callback for device rotation
         let deviceRotationCallback : (Notification) -> Void = { _ in
             // this fires BEFORE the UI is updated, so we check for the opposite orientation,
@@ -225,20 +222,11 @@ class ViewController: UIViewController {
             if (UIScreen.main.fixedCoordinateSpace.bounds.height >= wideScreenMinWidth
                 && UIScreen.main.fixedCoordinateSpace.bounds.width >= wideScreenMinWidth) {
                 // both orientations are considered "wide"
-                rightButton.title = alternateRightButtonTitle
                 return
             }
             
             // if we land here, check the current screen width.
             // we need to flip it around in some cases though, as our callback is triggered before the UI is updated
-            let changeToAlternateTitle = invert
-                ? !isWideScreen()
-                : isWideScreen()
-            if (changeToAlternateTitle) {
-                rightButton.title = alternateRightButtonTitle
-            } else {
-                rightButton.title = menuButtonTitle
-            }
         }
     }
 }
