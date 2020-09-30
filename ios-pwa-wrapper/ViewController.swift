@@ -95,6 +95,7 @@ class ViewController: UIViewController {
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         webViewContainer.addSubview(webView)
         
+        
         // settings
         webView.allowsBackForwardNavigationGestures = true
         webView.configuration.preferences.javaScriptEnabled = true
@@ -257,6 +258,7 @@ extension ViewController: WKNavigationDelegate {
 // WebView additional handlers
 extension ViewController: WKUIDelegate {
     // handle links opening in new tabs
+    
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         if (navigationAction.targetFrame == nil) {
             webView.load(navigationAction.request)
@@ -267,7 +269,7 @@ extension ViewController: WKUIDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let requestUrl = navigationAction.request.url {
             if let requestHost = requestUrl.host {
-                if (requestHost.range(of: allowedOrigin) != nil ) {
+                if (requestHost.range(of: allowedOrigin) != nil || requestHost.range(of: allowedOrigin2) != nil ) {
                     decisionHandler(.allow)
                 } else {
                     decisionHandler(.cancel)

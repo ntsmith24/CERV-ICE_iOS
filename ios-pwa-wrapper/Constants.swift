@@ -12,6 +12,7 @@ import UIKit
 let appTitle = "CERV-ICE"
 let webAppUrl = URL(string: "https://www.buildequinox.com/cervice")
 let allowedOrigin = "buildequinox.com"
+let allowedOrigin2 = "paypal.com"
 let menuButtonTitle = NSLocalizedString("menu", comment: "")
 let menuButtonJavascript = """
     $('.button-collapse').sideNav('hide');
